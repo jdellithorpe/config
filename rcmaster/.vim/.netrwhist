@@ -1,0 +1,8 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =6
+let g:netrw_dirhist_1='/home/jdellit/RAMCloud/bindings/java/gradle'
+let g:netrw_dirhist_2='/home/jdellit/tmp/foo1/src'
+let g:netrw_dirhist_3='/tmp/jdellit/share/tmp/lib'
+let g:netrw_dirhist_4='/home/jdellit/tmp/haha'
+let g:netrw_dirhist_5='/home/jdellit/git/ldbc_driver/src/main/resources'
+let g:netrw_dirhist_6='/home/jdellit/scripts'
