@@ -1,6 +1,9 @@
 #!/bin/bash
+SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
+
 echo "Running setup..."
 
+cd $SCRIPTPATH
 echo -n "  Installing git configuration... "
 cp .gitconfig ~/
 echo "SUCCESS"
