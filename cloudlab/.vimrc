@@ -8,6 +8,8 @@ set number
 set textwidth=80
 set colorcolumn=81
 
+filetype indent on
+
 " Uncomment the following to have Vim jump to the last position when
 " reopening a file
 if has("autocmd")
