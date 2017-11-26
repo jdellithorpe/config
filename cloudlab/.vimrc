@@ -8,6 +8,9 @@ set number
 set textwidth=80
 set colorcolumn=81
 
+set splitbelow
+set splitright
+
 filetype indent on
 
 " Uncomment the following to have Vim jump to the last position when

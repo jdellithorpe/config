@@ -4,6 +4,9 @@ set tabstop=2
 set shiftwidth=2
 set ruler
 
+set splitbelow
+set splitright
+
 execute pathogen#infect()
 
 let delimitMate_expand_cr = 1
