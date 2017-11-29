@@ -22,6 +22,10 @@ cat >> ~/.bashrc <<EOM
 vimf () {
   vim \$(find . -name \$1)
 }
+
+f () {
+  find . -name $1
+}
 EOM
 echo "SUCCESS"
 
