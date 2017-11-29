@@ -15,6 +15,8 @@ set splitright
 " Show matching open bracket on insertion of closing bracket
 set showmatch
 
+set shiftround
+
 filetype plugin indent on
 
 " Uncomment the following to have Vim jump to the last position when
