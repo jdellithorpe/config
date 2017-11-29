@@ -1,5 +1,6 @@
 set expandtab
 set shiftwidth=2
+set shiftround
 set softtabstop=2
 
 set ruler
@@ -8,14 +9,20 @@ set number
 set textwidth=80
 set colorcolumn=81
 
-" Open new split windows either below or to the right of current window
 set splitbelow
 set splitright
 
-" Show matching open bracket on insertion of closing bracket
 set showmatch
 
-set shiftround
+let mapleader = ","
+let maplocalleader = "\\"
+
+nnoremap <leader>ev :vsplit $MYVIMRC<cr>
+nnoremap <leader>sv :source $MYVIMRC<cr>
+
+iabbrev @@ jde@cs.stanford.edu
+iabbrev adn and
+iabbrev teh the
 
 filetype plugin indent on
 
@@ -24,3 +31,5 @@ filetype plugin indent on
 if has("autocmd")
   au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 endif
+
+execute pathogen#infect()
