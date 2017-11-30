@@ -1,20 +1,20 @@
 #!/bin/bash
 SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
+cd $SCRIPTPATH
 
 echo "Running setup..."
 
-cd $SCRIPTPATH
 echo -n "  Installing git configuration... "
-ln -s .gitconfig ~/
+ln -s $SCRIPTPATH/.gitconfig ~/
 echo "SUCCESS"
 
 echo -n "  Installing vim configuration... "
-ln -s .vimrc ~/
-ln -s .vim ~/
+ln -s $SCRIPTPATH/.vimrc ~/
+ln -s $SCRIPTPATH/.vim ~/
 echo "SUCCESS"
 
 echo -n "  Installing tmux configuration... "
-ln -s .tmux.conf ~/
+ln -s $SCRIPTPATH/.tmux.conf ~/
 echo "SUCCESS"
 
 echo -n "  Installing bash configuration... "
