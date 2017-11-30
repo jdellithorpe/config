@@ -20,6 +20,8 @@ let maplocalleader = "\\"
 nnoremap <leader>ev :vsplit $MYVIMRC<cr>
 nnoremap <leader>sv :source $MYVIMRC<cr>
 
+inoremap <c-u> <esc>lviwUei
+
 iabbrev @@ jde@cs.stanford.edu
 iabbrev adn and
 iabbrev teh the
