@@ -5,31 +5,22 @@ echo "Running setup..."
 
 cd $SCRIPTPATH
 echo -n "  Installing git configuration... "
-cp .gitconfig ~/
+ln -s .gitconfig ~/
 echo "SUCCESS"
 
 echo -n "  Installing vim configuration... "
-cp .vimrc ~/
+ln -s .vimrc ~/
+ln -s .vim ~/
 echo "SUCCESS"
 
 echo -n "  Installing tmux configuration... "
-cp .tmux.conf ~/
+ln -s .tmux.conf ~/
 echo "SUCCESS"
 
 echo -n "  Installing bash configuration... "
 cat >> ~/.bashrc <<EOM
 
-vimf () {
-  vim \$(find . -name \$1)
-}
-
-f () {
-  find . -name \$1
-}
-
-g () {
-  grep -R -E "\$1" ./*
-}
+source $SCRIPTPATH/.bashrc
 EOM
 echo "SUCCESS"
 
