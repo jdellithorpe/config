@@ -1,14 +1,14 @@
 # Useful aliases and functions.
 vimf () {
-  vim \$(find . -name \$1)
+  vim $(find . -name $1)
 }
 
 f () {
-  find . -name \$1
+  find . -name $1
 }
 
 g () {
-  grep -R -E "\$1" ./*
+  grep -R -E "$1" ./*
 }
 
 # Default git commit message editor.
