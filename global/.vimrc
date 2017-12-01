@@ -22,6 +22,9 @@ nnoremap <leader>sv :source $MYVIMRC<cr>
 
 inoremap <c-u> <esc>lviwUei
 
+nnoremap H 0
+nnoremap L $
+
 iabbrev @@ jde@cs.stanford.edu
 iabbrev adn and
 iabbrev teh the
