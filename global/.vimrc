@@ -21,9 +21,12 @@ nnoremap <leader>ev :vsplit $MYVIMRC<cr>
 nnoremap <leader>sv :source $MYVIMRC<cr>
 
 inoremap <c-u> <esc>lviwUei
+inoremap jk <esc>
 
 nnoremap H 0
 nnoremap L $
+nnoremap <leader>w :w<cr>
+nnoremap <leader>q :q<cr>
 
 iabbrev @@ jde@cs.stanford.edu
 iabbrev adn and
