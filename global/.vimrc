@@ -14,6 +14,8 @@ set splitright
 
 set showmatch
 
+set hlsearch
+
 let mapleader = ","
 let maplocalleader = "\\"
 
@@ -27,6 +29,7 @@ nnoremap H 0
 nnoremap L $
 nnoremap <leader>w :w<cr>
 nnoremap <leader>q :q<cr>
+nnoremap <leader>r :vs<bar>:b#<cr>
 
 iabbrev @@ jde@cs.stanford.edu
 iabbrev adn and
