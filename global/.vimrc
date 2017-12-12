@@ -31,6 +31,7 @@ nnoremap <leader>q :q<cr>
 iabbrev @@ jde@cs.stanford.edu
 iabbrev adn and
 iabbrev teh the
+iabbrev taht that
 
 filetype plugin indent on
 
