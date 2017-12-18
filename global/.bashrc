@@ -13,3 +13,6 @@ g () {
 
 # Default git commit message editor.
 export EDITOR=vim
+
+# Directory where notes are stored
+export NOTES_HOME=$HOME/notes
