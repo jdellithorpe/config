@@ -37,11 +37,14 @@ iabbrev taht that
 
 filetype plugin indent on
 
-if has("autocmd")
-  au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
-endif
+" Open files with cursor on last position {{{
+augroup goto_last_line
+  autocmd!
+  autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+augroup END
+" }}}
 
-" Vimscript file settings ---------------------- {{{
+" Vimscript file settings {{{
 augroup filetype_vim
   autocmd!
   autocmd FileType vim setlocal foldmethod=marker
