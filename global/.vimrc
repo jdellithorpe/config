@@ -2,12 +2,11 @@ set expandtab
 set shiftwidth=2
 set shiftround
 set softtabstop=2
+set textwidth=80
+set colorcolumn=81
 
 set ruler
 set number
-
-set textwidth=80
-set colorcolumn=81
 
 set splitbelow
 set splitright
@@ -41,5 +40,12 @@ filetype plugin indent on
 if has("autocmd")
   au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 endif
+
+" Vimscript file settings ---------------------- {{{
+augroup filetype_vim
+  autocmd!
+  autocmd FileType vim setlocal foldmethod=marker
+augroup END
+" }}}
 
 execute pathogen#infect()
