@@ -21,6 +21,8 @@ let maplocalleader = "\\"
 nnoremap <leader>ev :vsplit $MYVIMRC<cr>
 nnoremap <leader>sv :source $MYVIMRC<cr>
 
+nnoremap <leader>" viw<esc>a"<esc>bi"<esc>lel
+
 inoremap <c-u> <esc>lviwUei
 inoremap jk <esc>
 
