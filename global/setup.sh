@@ -5,16 +5,16 @@ cd $SCRIPTPATH
 echo "Running setup..."
 
 echo -n "  Installing git configuration... "
-ln -s $SCRIPTPATH/.gitconfig ~/
+ln -f -s $SCRIPTPATH/.gitconfig ~/
 echo "SUCCESS"
 
 echo -n "  Installing vim configuration... "
-ln -s $SCRIPTPATH/.vimrc ~/
-ln -s $SCRIPTPATH/.vim ~/
+ln -f -s $SCRIPTPATH/.vimrc ~/
+ln -f -s $SCRIPTPATH/.vim ~/
 echo "SUCCESS"
 
 echo -n "  Installing tmux configuration... "
-ln -s $SCRIPTPATH/.tmux.conf ~/
+ln -f -s $SCRIPTPATH/.tmux.conf ~/
 echo "SUCCESS"
 
 echo -n "  Installing bash configuration... "
