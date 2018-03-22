@@ -38,6 +38,7 @@ iabbrev teh the
 iabbrev taht that
 
 filetype plugin indent on
+syntax on
 
 " Open files with cursor on last position {{{
 augroup goto_last_line
