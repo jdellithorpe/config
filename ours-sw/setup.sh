@@ -14,7 +14,7 @@ ln -f -s $SCRIPTPATH/../global/.vim ~/
 echo "SUCCESS"
 
 echo -n "  Installing tmux configuration... "
-ln -f -s $SCRIPTPATH/../.tmux.conf ~/
+ln -f -s $SCRIPTPATH/../global/.tmux.conf ~/
 echo "SUCCESS"
 
 echo -n "  Installing bash configuration... "
