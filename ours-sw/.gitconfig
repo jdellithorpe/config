@@ -1,0 +1,11 @@
+[user]
+  name = Jonathan Ellithorpe
+  email = jonathan@ours-tech.com
+[rerere]
+  enabled = true
+[color]
+  diff = auto
+  branch = auto
+  status = auto
+[push]
+  default = current
