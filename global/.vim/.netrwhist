@@ -1,0 +1,6 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =4
+let g:netrw_dirhist_1='/home/ec2-user/notes/.snaps/090c1e88658179c7b22bc1f2882a1d4ae4020d04'
+let g:netrw_dirhist_2='/home/ec2-user/notes/.snaps/5f746720b9c93ca9edb36985e9e7d7378b6ce1b2'
+let g:netrw_dirhist_3='/home/ec2-user/notes/.snaps/8b8c4af82a99236420dddd1d9634a0b19afddd18'
+let g:netrw_dirhist_4='/home/ec2-user/notes/.snaps/8a1cc26d80f3713ef55b30e716cc975655135ec4'
