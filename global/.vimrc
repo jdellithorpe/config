@@ -55,3 +55,5 @@ augroup END
 " }}}
 
 execute pathogen#infect()
+
+set tags+=~/tags
