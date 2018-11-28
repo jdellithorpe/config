@@ -16,3 +16,5 @@ export EDITOR=vim
 
 # Directory where notes are stored
 export NOTES_HOME=$HOME/notes
+
+export CSCOPE_DB=~/cscope.out
