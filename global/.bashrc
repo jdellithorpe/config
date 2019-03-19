@@ -1,6 +1,6 @@
 # Useful aliases and functions.
-alias mc='maven compile -DskipTests'
-alias mi='maven install -DskipTests'
+alias mc='mvn compile -DskipTests'
+alias mi='mvn install -DskipTests'
 
 vimf () {
   vim $(find . -name $1)
