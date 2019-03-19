@@ -1,4 +1,7 @@
 # Useful aliases and functions.
+alias mc='maven compile -DskipTests'
+alias mi='maven install -DskipTests'
+
 vimf () {
   vim $(find . -name $1)
 }
@@ -9,6 +12,10 @@ f () {
 
 g () {
   grep -R -E "$1" ./*
+}
+
+gclone() {
+  git clone https://github.com/jdellithorpe/$1.git
 }
 
 # Default git commit message editor.
