@@ -18,6 +18,17 @@ gclone() {
   git clone https://github.com/jdellithorpe/$1.git
 }
 
+# Execute program in Maven project
+# me App
+me () {
+  sourceFile="$1.java"
+  filePath=$(f ${sourceFile})
+  package=$(cat ${filePath} | grep -E "package" | awk '{sub(/;/, "", $2); print $2}')
+  mainClass=${package}.$1
+  shift
+  mvn exec:java -Dexec.mainClass="${mainClass}" -Dexec.args="$*"
+}
+
 # Default git commit message editor.
 export EDITOR=vim
 
