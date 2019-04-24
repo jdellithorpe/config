@@ -37,6 +37,7 @@ iabbrev adn and
 iabbrev teh the
 iabbrev taht that
 
+set nocompatible
 filetype plugin indent on
 syntax on
 
