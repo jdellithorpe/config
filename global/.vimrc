@@ -58,3 +58,8 @@ augroup END
 execute pathogen#infect()
 
 set tags+=~/tags
+
+augroup VimwikiSettings
+  autocmd!
+  autocmd FileType vimwiki set textwidth=99|set colorcolumn=100
+augroup END
