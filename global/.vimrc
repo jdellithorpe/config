@@ -2,8 +2,6 @@ set expandtab
 set shiftwidth=2
 set shiftround
 set softtabstop=2
-set textwidth=80
-set colorcolumn=81
 
 set ruler
 set number
@@ -59,7 +57,37 @@ execute pathogen#infect()
 
 set tags+=~/tags
 
+" Setings for Vimwiki
 augroup VimwikiSettings
   autocmd!
   autocmd FileType vimwiki set textwidth=99|set colorcolumn=100
+  autocmd FileType vimwiki nmap <leader>we <Plug>VimwikiSplitLink
+  autocmd FileType vimwiki nmap <leader>wq <Plug>VimwikiVSplitLink
+  autocmd FileType vimwiki hi VimwikiHeader1 ctermfg=Blue
+  autocmd FileType vimwiki hi VimwikiHeader2 ctermfg=Green
+  autocmd FileType vimwiki hi VimwikiHeader3 ctermfg=Cyan
+  autocmd FileType vimwiki hi VimwikiHeader4 ctermfg=Red
+  autocmd FileType vimwiki hi VimwikiHeader5 ctermfg=Magenta
+  autocmd FileType vimwiki hi VimwikiHeader6 ctermfg=Brown
 augroup END
+
+" Settings for C/C++
+augroup CCPPSettings
+  autocmd!
+  autocmd FileType c set textwidth=80|set colorcolumn=81
+  autocmd FileType cpp set textwidth=80|set colorcolumn=81
+augroup END
+
+" Settings for Java
+augroup Java
+  autocmd!
+  autocmd FileType java set textwidth=80|set colorcolumn=81
+augroup END
+
+nnoremap <leader>sp :call <SID>SynStack()<CR>
+function! <SID>SynStack()
+  if !exists("*synstack")
+    return
+  endif
+  echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
+endfunc
