@@ -64,12 +64,14 @@ augroup VimwikiSettings
   autocmd FileType vimwiki nmap <leader>we <Plug>VimwikiSplitLink
   autocmd FileType vimwiki nmap <leader>wq <Plug>VimwikiVSplitLink
   autocmd FileType vimwiki hi VimwikiHeader1 ctermfg=Blue
-  autocmd FileType vimwiki hi VimwikiHeader2 ctermfg=Green
-  autocmd FileType vimwiki hi VimwikiHeader3 ctermfg=Cyan
-  autocmd FileType vimwiki hi VimwikiHeader4 ctermfg=Red
-  autocmd FileType vimwiki hi VimwikiHeader5 ctermfg=Magenta
+  autocmd FileType vimwiki hi VimwikiHeader2 ctermfg=Red
+  autocmd FileType vimwiki hi VimwikiHeader3 ctermfg=Magenta
+  autocmd FileType vimwiki hi VimwikiHeader4 ctermfg=Cyan
+  autocmd FileType vimwiki hi VimwikiHeader5 ctermfg=Green
   autocmd FileType vimwiki hi VimwikiHeader6 ctermfg=Brown
 augroup END
+
+let g:vimwiki_list = [{'path': '~/vimwiki/stanford/'}, {'path': '~/vimwiki/ours/'}]
 
 " Settings for C/C++
 augroup CCPPSettings
