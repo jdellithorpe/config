@@ -155,35 +155,36 @@ endfor
 " possibly concealed chars
 let s:conceal = exists("+conceallevel") ? ' conceal' : ''
 
-execute 'syn match VimwikiEqInChar contained /'.
-      \ vimwiki#vars#get_syntaxlocal('char_eqin').'/'.s:conceal
-execute 'syn match VimwikiBoldChar contained /'.
-      \ vimwiki#vars#get_syntaxlocal('char_bold').'/'.s:conceal
-execute 'syn match VimwikiItalicChar contained /'.
-      \ vimwiki#vars#get_syntaxlocal('char_italic').'/'.s:conceal
-execute 'syn match VimwikiBoldItalicChar contained /'.
-      \ vimwiki#vars#get_syntaxlocal('char_bolditalic').'/'.s:conceal
-execute 'syn match VimwikiItalicBoldChar contained /'.
-      \ vimwiki#vars#get_syntaxlocal('char_italicbold').'/'.s:conceal
-execute 'syn match VimwikiCodeChar contained /'.
-      \ vimwiki#vars#get_syntaxlocal('char_code').'/'.s:conceal
-execute 'syn match VimwikiDelTextChar contained /'.
-      \ vimwiki#vars#get_syntaxlocal('char_deltext').'/'.s:conceal
-execute 'syn match VimwikiSuperScript contained /'.
-      \ vimwiki#vars#get_syntaxlocal('char_superscript').'/'.s:conceal
-execute 'syn match VimwikiSubScript contained /'.
-      \ vimwiki#vars#get_syntaxlocal('char_subscript').'/'.s:conceal
-
-
-
+if vimwiki#vars#get_global('conceal_onechar_markers')
+  execute 'syn match VimwikiEqInChar contained /'.
+        \ vimwiki#vars#get_syntaxlocal('char_eqin').'/'.s:conceal
+  execute 'syn match VimwikiBoldChar contained /'.
+        \ vimwiki#vars#get_syntaxlocal('char_bold').'/'.s:conceal
+  execute 'syn match VimwikiItalicChar contained /'.
+        \ vimwiki#vars#get_syntaxlocal('char_italic').'/'.s:conceal
+  execute 'syn match VimwikiBoldItalicChar contained /'.
+        \ vimwiki#vars#get_syntaxlocal('char_bolditalic').'/'.s:conceal
+  execute 'syn match VimwikiItalicBoldChar contained /'.
+        \ vimwiki#vars#get_syntaxlocal('char_italicbold').'/'.s:conceal
+  execute 'syn match VimwikiCodeChar contained /'.
+        \ vimwiki#vars#get_syntaxlocal('char_code').'/'.s:conceal
+  execute 'syn match VimwikiDelTextChar contained /'.
+        \ vimwiki#vars#get_syntaxlocal('char_deltext').'/'.s:conceal
+  execute 'syn match VimwikiSuperScript contained /'.
+        \ vimwiki#vars#get_syntaxlocal('char_superscript').'/'.s:conceal
+  execute 'syn match VimwikiSubScript contained /'.
+        \ vimwiki#vars#get_syntaxlocal('char_subscript').'/'.s:conceal
+endif
 
 
 let s:options = ' contained transparent contains=NONE'
+if exists("+conceallevel")
+  let s:options .= s:conceal
+endif
 
 " A shortener for long URLs: LinkRest (a middle part of the URL) is concealed
 " VimwikiLinkRest group is left undefined if link shortening is not desired
 if exists("+conceallevel") && vimwiki#vars#get_global('url_maxsave') > 0
-  let s:options .= s:conceal
   execute 'syn match VimwikiLinkRest `\%(///\=[^/ \t]\+/\)\zs\S\+\ze'
         \.'\%([/#?]\w\|\S\{'.vimwiki#vars#get_global('url_maxsave').'}\)`'.' cchar=~'.s:options
 endif
@@ -318,8 +319,9 @@ execute 'syntax match VimwikiCodeT /'.vimwiki#vars#get_syntaxlocal('rxCode').
 " <hr> horizontal rule
 execute 'syntax match VimwikiHR /'.vimwiki#vars#get_syntaxlocal('rxHR').'/'
 
-execute 'syntax region VimwikiPre start=/'.vimwiki#vars#get_syntaxlocal('rxPreStart').
-      \ '/ end=/'.vimwiki#vars#get_syntaxlocal('rxPreEnd').'/ contains=@Spell'
+let concealpre = vimwiki#vars#get_global('conceal_pre') ? ' concealends' : ''
+execute 'syntax region VimwikiPre matchgroup=VimwikiPreDelim start=/'.vimwiki#vars#get_syntaxlocal('rxPreStart').
+      \ '/ end=/'.vimwiki#vars#get_syntaxlocal('rxPreEnd').'/ contains=@Spell'.concealpre
 
 execute 'syntax region VimwikiMath start=/'.vimwiki#vars#get_syntaxlocal('rxMathStart').
       \ '/ end=/'.vimwiki#vars#get_syntaxlocal('rxMathEnd').'/ contains=@Spell'
@@ -383,7 +385,7 @@ hi def link VimwikiBoldT VimwikiBold
 hi def VimwikiItalic term=italic cterm=italic gui=italic
 hi def link VimwikiItalicT VimwikiItalic
 
-hi def VimwikiBoldItalic term=bold cterm=bold gui=bold,italic
+hi def VimwikiBoldItalic term=bold,italic cterm=bold,italic gui=bold,italic
 hi def link VimwikiItalicBold VimwikiBoldItalic
 hi def link VimwikiBoldItalicT VimwikiBoldItalic
 hi def link VimwikiItalicBoldT VimwikiBoldItalic
@@ -395,6 +397,7 @@ hi def link VimwikiCodeT VimwikiCode
 
 hi def link VimwikiPre PreProc
 hi def link VimwikiPreT VimwikiPre
+hi def link VimwikiPreDelim VimwikiPre
 
 hi def link VimwikiMath Number
 hi def link VimwikiMathT VimwikiMath

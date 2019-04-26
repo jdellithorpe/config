@@ -10,7 +10,7 @@ endif
 let g:loaded_vimwiki = 1
 
 " Set to version number for release, otherwise -1 for dev-branch
-let s:plugin_vers = "2.4.1"
+let s:plugin_vers = -1
 
 " Get the directory the script is installed in
 let s:plugin_dir = expand('<sfile>:p:h:h')
@@ -102,11 +102,21 @@ function! s:setup_buffer_enter()
     return
   endif
 
+  call s:set_global_options()
+endfunction
+
+
+" this is called when the buffer enters a window or when running a  diff
+function! s:setup_buffer_win_enter()
+  " don't do anything if it's not managed by Vimwiki (that is, when it's not in
+  " a registered wiki and not a temporary wiki)
+  if vimwiki#vars#get_bufferlocal('wiki_nr') == -1
+    return
+  endif
+
   if &filetype != 'vimwiki'
     setfiletype vimwiki
   endif
-
-  call s:set_global_options()
 
   call s:set_windowlocal_options()
 endfunction
@@ -239,6 +249,50 @@ if !exists("*VimwikiWikiIncludeHandler")
 endif
 
 
+" write a level 1 header to new wiki files
+" a:fname should be an absolute filepath
+function! s:create_h1(fname)
+  if vimwiki#vars#get_global('auto_header')
+    let idx = vimwiki#vars#get_bufferlocal('wiki_nr')
+
+    " don't do anything for unregistered wikis
+    if idx == -1
+      return
+    endif
+
+    " don't create header for the diary index page
+    if vimwiki#path#is_equal(a:fname,
+          \ vimwiki#vars#get_wikilocal('path', idx).vimwiki#vars#get_wikilocal('diary_rel_path', idx).
+          \ vimwiki#vars#get_wikilocal('diary_index', idx).vimwiki#vars#get_wikilocal('ext', idx))
+      return
+    endif
+
+    " get tail of filename without extension
+    let title = expand('%:t:r')
+
+    " don't insert header for index page
+    if title ==# vimwiki#vars#get_wikilocal('index', idx)
+      return
+    endif
+
+    " don't substitute space char for diary pages
+    if title !~# '^\d\{4}-\d\d-\d\d'
+      " NOTE: it is possible this could remove desired characters if the 'links_space_char'
+      " character matches characters that are intentionally used in the title.
+      let title = substitute(title, vimwiki#vars#get_wikilocal('links_space_char'), ' ', 'g')
+    endif
+
+    " insert the header
+    if vimwiki#vars#get_wikilocal('syntax') ==? 'markdown'
+      keepjumps call append(0, '# ' . title)
+      for _ in range(vimwiki#vars#get_global('markdown_header_style'))
+        keepjumps call append(1, '')
+      endfor
+    else
+      keepjumps call append(0, '= ' . title . ' =')
+    endif
+  endif
+endfunction
 
 " Define autocommands for all known wiki extensions
 
@@ -258,10 +312,16 @@ augroup vimwiki
     exe 'autocmd BufNewFile,BufRead *'.s:ext.' call s:setup_new_wiki_buffer()'
     exe 'autocmd BufEnter *'.s:ext.' call s:setup_buffer_enter()'
     exe 'autocmd BufLeave *'.s:ext.' call s:setup_buffer_leave()'
+    exe 'autocmd BufWinEnter *'.s:ext.' call s:setup_buffer_win_enter()'
+    if exists('##DiffUpdated')
+      exe 'autocmd DiffUpdated *'.s:ext.' call s:setup_buffer_win_enter()'
+    endif
+    " automatically generate a level 1 header for new files
+    exe 'autocmd BufNewFile *'.s:ext.' call s:create_h1(expand("%:p"))'
     " Format tables when exit from insert mode. Do not use textwidth to
     " autowrap tables.
     if vimwiki#vars#get_global('table_auto_fmt')
-      exe 'autocmd InsertLeave *'.s:ext.' call vimwiki#tbl#format(line("."))'
+      exe 'autocmd InsertLeave *'.s:ext.' call vimwiki#tbl#format(line("."), 2)'
       exe 'autocmd InsertEnter *'.s:ext.' call vimwiki#tbl#reset_tw(line("."))'
     endif
     if vimwiki#vars#get_global('folding') =~? ':quick$'
@@ -280,24 +340,31 @@ augroup END
 
 
 command! VimwikiUISelect call vimwiki#base#ui_select()
-" why not using <count> instead of v:count1?
-" See https://github.com/vimwiki-backup/vimwiki/issues/324
-command! -count=1 VimwikiIndex
-      \ call vimwiki#base#goto_index(v:count1)
-command! -count=1 VimwikiTabIndex
-      \ call vimwiki#base#goto_index(v:count1, 1)
 
-command! -count=1 VimwikiDiaryIndex
-      \ call vimwiki#diary#goto_diary_index(v:count1)
-command! -count=1 VimwikiMakeDiaryNote
-      \ call vimwiki#diary#make_note(v:count)
-command! -count=1 VimwikiTabMakeDiaryNote
-      \ call vimwiki#diary#make_note(v:count, 1)
-command! -count=1 VimwikiMakeYesterdayDiaryNote
-      \ call vimwiki#diary#make_note(v:count, 0,
+" these commands take a count e.g. :VimwikiIndex 2
+" the default behavior is to open the index, diary etc.
+" for the CURRENT wiki if no count is given
+command! -count=0 VimwikiIndex
+      \ call vimwiki#base#goto_index(<count>)
+
+command! -count=0 VimwikiTabIndex
+      \ call vimwiki#base#goto_index(<count>, 1)
+
+command! -count=0 VimwikiDiaryIndex
+      \ call vimwiki#diary#goto_diary_index(<count>)
+
+command! -count=0 VimwikiMakeDiaryNote
+      \ call vimwiki#diary#make_note(<count>)
+
+command! -count=0 VimwikiTabMakeDiaryNote
+      \ call vimwiki#diary#make_note(<count>, 1)
+
+command! -count=0 VimwikiMakeYesterdayDiaryNote
+      \ call vimwiki#diary#make_note(<count>, 0,
       \ vimwiki#diary#diary_date_link(localtime() - 60*60*24))
-command! -count=1 VimwikiMakeTomorrowDiaryNote
-      \ call vimwiki#diary#make_note(v:count, 0,
+
+command! -count=0 VimwikiMakeTomorrowDiaryNote
+      \ call vimwiki#diary#make_note(<count>, 0,
       \ vimwiki#diary#diary_date_link(localtime() + 60*60*24))
 
 command! VimwikiDiaryGenerateLinks
@@ -305,68 +372,88 @@ command! VimwikiDiaryGenerateLinks
 
 command! VimwikiShowVersion call s:get_version()
 
-
-
 let s:map_prefix = vimwiki#vars#get_global('map_prefix')
 
-if !hasmapto('<Plug>VimwikiIndex')
+if !hasmapto('<Plug>VimwikiIndex') && maparg(s:map_prefix.'w', 'n') == ""
   exe 'nmap <silent><unique> '.s:map_prefix.'w <Plug>VimwikiIndex'
 endif
-nnoremap <unique><script> <Plug>VimwikiIndex :VimwikiIndex<CR>
+nnoremap <unique><script> <Plug>VimwikiIndex
+    \ :<C-U>call vimwiki#base#goto_index(v:count1)<CR>
 
-if !hasmapto('<Plug>VimwikiTabIndex')
+if !hasmapto('<Plug>VimwikiTabIndex') && maparg(s:map_prefix.'t', 'n') == ""
   exe 'nmap <silent><unique> '.s:map_prefix.'t <Plug>VimwikiTabIndex'
 endif
-nnoremap <unique><script> <Plug>VimwikiTabIndex :VimwikiTabIndex<CR>
+nnoremap <unique><script> <Plug>VimwikiTabIndex
+    \ :<C-U>call vimwiki#base#goto_index(v:count1, 1)<CR>
 
-if !hasmapto('<Plug>VimwikiUISelect')
+if !hasmapto('<Plug>VimwikiUISelect') && maparg(s:map_prefix.'s', 'n') == ""
   exe 'nmap <silent><unique> '.s:map_prefix.'s <Plug>VimwikiUISelect'
 endif
 nnoremap <unique><script> <Plug>VimwikiUISelect :VimwikiUISelect<CR>
 
-if !hasmapto('<Plug>VimwikiDiaryIndex')
+if !hasmapto('<Plug>VimwikiDiaryIndex') && maparg(s:map_prefix.'i', 'n') == ""
   exe 'nmap <silent><unique> '.s:map_prefix.'i <Plug>VimwikiDiaryIndex'
 endif
-nnoremap <unique><script> <Plug>VimwikiDiaryIndex :VimwikiDiaryIndex<CR>
+nnoremap <unique><script> <Plug>VimwikiDiaryIndex
+    \ :<C-U>call vimwiki#diary#goto_diary_index(v:count)<CR>
 
-if !hasmapto('<Plug>VimwikiDiaryGenerateLinks')
+if !hasmapto('<Plug>VimwikiDiaryGenerateLinks') && maparg(s:map_prefix.'<Leader>i', 'n') == ""
   exe 'nmap <silent><unique> '.s:map_prefix.'<Leader>i <Plug>VimwikiDiaryGenerateLinks'
 endif
 nnoremap <unique><script> <Plug>VimwikiDiaryGenerateLinks :VimwikiDiaryGenerateLinks<CR>
 
-if !hasmapto('<Plug>VimwikiMakeDiaryNote')
+if !hasmapto('<Plug>VimwikiMakeDiaryNote') && maparg(s:map_prefix.'<Leader>w', 'n') == ""
   exe 'nmap <silent><unique> '.s:map_prefix.'<Leader>w <Plug>VimwikiMakeDiaryNote'
 endif
-nnoremap <unique><script> <Plug>VimwikiMakeDiaryNote :VimwikiMakeDiaryNote<CR>
+nnoremap <unique><script> <Plug>VimwikiMakeDiaryNote
+    \ :<C-U>call vimwiki#diary#make_note(v:count)<CR>
 
-if !hasmapto('<Plug>VimwikiTabMakeDiaryNote')
+if !hasmapto('<Plug>VimwikiTabMakeDiaryNote') && maparg(s:map_prefix.'<Leader>t', 'n') == ""
   exe 'nmap <silent><unique> '.s:map_prefix.'<Leader>t <Plug>VimwikiTabMakeDiaryNote'
 endif
 nnoremap <unique><script> <Plug>VimwikiTabMakeDiaryNote
-      \ :VimwikiTabMakeDiaryNote<CR>
+    \ :<C-U>call vimwiki#diary#make_note(v:count, 1)<CR>
 
-if !hasmapto('<Plug>VimwikiMakeYesterdayDiaryNote')
+if !hasmapto('<Plug>VimwikiMakeYesterdayDiaryNote') && maparg(s:map_prefix.'<Leader>y', 'n') == ""
   exe 'nmap <silent><unique> '.s:map_prefix.'<Leader>y <Plug>VimwikiMakeYesterdayDiaryNote'
 endif
 nnoremap <unique><script> <Plug>VimwikiMakeYesterdayDiaryNote
-      \ :VimwikiMakeYesterdayDiaryNote<CR>
+    \ :<C-U>call vimwiki#diary#make_note(v:count, 0,
+    \ vimwiki#diary#diary_date_link(localtime() - 60*60*24))<CR>
 
 if !hasmapto('<Plug>VimwikiMakeTomorrowDiaryNote')
   exe 'nmap <silent><unique> '.s:map_prefix.'<Leader>m <Plug>VimwikiMakeTomorrowDiaryNote'
 endif
 nnoremap <unique><script> <Plug>VimwikiMakeTomorrowDiaryNote
-      \ :VimwikiMakeTomorrowDiaryNote<CR>
-
+    \ :<C-U>call vimwiki#diary#make_note(v:count, 0,
+    \ vimwiki#diary#diary_date_link(localtime() + 60*60*24))<CR>
 
 
 
 function! s:build_menu(topmenu)
+  let wnamelist = []
   for idx in range(vimwiki#vars#number_of_wikis())
-    let norm_path = fnamemodify(vimwiki#vars#get_wikilocal('path', idx), ':h:t')
-    let norm_path = escape(norm_path, '\ \.')
-    execute 'menu '.a:topmenu.'.Open\ index.'.norm_path.
+    let wname = vimwiki#vars#get_wikilocal('name', idx)
+    if wname ==? ''
+      " fall back to the path if wiki isn't named
+      let wname = fnamemodify(vimwiki#vars#get_wikilocal('path', idx), ':h:t')
+    endif
+
+    if index(wnamelist, wname) != -1
+      " append wiki index number to duplicate entries
+      let wname = wname . ' ' . string(idx + 1)
+    endif
+
+    " add entry to the list of names for duplicate checks
+    call add(wnamelist, wname)
+
+    " escape spaces and periods
+    let wname = escape(wname, '\ \.')
+
+    " build the menu
+    execute 'menu '.a:topmenu.'.Open\ index.'.wname.
           \ ' :call vimwiki#base#goto_index('.(idx+1).')<CR>'
-    execute 'menu '.a:topmenu.'.Open/Create\ diary\ note.'.norm_path.
+    execute 'menu '.a:topmenu.'.Open/Create\ diary\ note.'.wname.
           \ ' :call vimwiki#diary#make_note('.(idx+1).')<CR>'
   endfor
 endfunction

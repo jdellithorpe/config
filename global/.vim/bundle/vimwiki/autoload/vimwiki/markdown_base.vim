@@ -110,7 +110,7 @@ endfunction
 function! s:normalize_link_syntax_v()
   let lnum = line('.')
   let sel_save = &selection
-  let &selection = "old"
+  let &selection = 'old'
   let rv = @"
   let rt = getregtype('"')
   let done = 0
@@ -120,8 +120,11 @@ function! s:normalize_link_syntax_v()
     let visual_selection = @"
     let link = s:safesubstitute(vimwiki#vars#get_syntaxlocal('Weblink1Template'),
           \ '__LinkUrl__', visual_selection, '')
-    let link = s:safesubstitute(link, '__LinkDescription__', visual_selection, '')
 
+    " replace spaces with new character if option is set
+    let link = substitute(link, '\s', vimwiki#vars#get_wikilocal('links_space_char'), 'g')
+
+    let link = s:safesubstitute(link, '__LinkDescription__', visual_selection, '')
     call setreg('"', substitute(link, '\n', '', ''), visualmode())
 
     " paste result

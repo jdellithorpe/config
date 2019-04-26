@@ -1,8 +1,9 @@
-# VimWiki: A Personal Wiki For Vim
+![VimWiki: A Personal Wiki For Vim](doc/splash.png)
 
 [中文](README-cn.md)
 
 - [Intro](#intro)
+- [Screenshots](#screenshots)
 - [Installation](#installation)
     - [Prerequisites](#prerequisites)
     - [VIM Packages](#installation-using-vim-packages-since-vim-741528)
@@ -18,6 +19,8 @@
 - [Helping VimWiki](#helping-vimwiki)
 - [Wiki](https://github.com/vimwiki/vimwiki/wiki)
 - [License](#license)
+
+----
 
 ## Intro
 
@@ -70,6 +73,7 @@ The result should look something like:
 ![Entries View](doc/entries.png)
 ![Todos View](doc/todos.png)
 ![Wiki View](doc/wiki.png)
+
 
 ## Installation
 
@@ -215,7 +219,7 @@ let g:vimwiki_list = [{'path': '~/vimwiki/',
 ## Getting help
 
 **Have a question?**  
-Visit the IRC channel [`#vimwiki`](https://webchat.freenode.net/?channels=#vimwiki) on Freenode ([webchat](https://webchat.freenode.net/?channels=#vimwiki), also synced to Matrix/Riot: `#vimwiki:matrix.org`) or post to the [mailing list](https://groups.google.com/forum/#!forum/vimwiki).
+Visit the IRC channel [`#vimwiki`](https://webchat.freenode.net/?channels=#vimwiki) on Freenode ([webchat](https://webchat.freenode.net/?channels=#vimwiki), also synced to Matrix/Riot: `#freenode_#vimwiki:matrix.org`) or post to the [mailing list](https://groups.google.com/forum/#!forum/vimwiki).
 
 ## Helping VimWiki
 
@@ -223,6 +227,8 @@ VimWiki has a lot of users but only very few recurring developers or people
 helping the community. Your help is therefore appreciated. Everyone can help!
 See [#625](https://github.com/vimwiki/vimwiki/issues/625) for information on
 how you can help.
+
+----
 
 ## License
 

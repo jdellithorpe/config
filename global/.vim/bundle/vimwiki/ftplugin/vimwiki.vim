@@ -253,6 +253,7 @@ command! -buffer VimwikiAll2HTML
 
 command! -buffer VimwikiTOC call vimwiki#base#table_of_contents(1)
 
+command! -buffer VimwikiNextTask call vimwiki#base#find_next_task()
 command! -buffer VimwikiNextLink call vimwiki#base#find_next_link()
 command! -buffer VimwikiPrevLink call vimwiki#base#find_prev_link()
 command! -buffer VimwikiDeleteLink call vimwiki#base#delete_link()
@@ -266,7 +267,7 @@ command! -buffer -nargs=? VimwikiNormalizeLink call vimwiki#base#normalize_link(
 
 command! -buffer VimwikiTabnewLink call vimwiki#base#follow_link('tab', 0, 1)
 
-command! -buffer VimwikiGenerateLinks call vimwiki#base#generate_links()
+command! -buffer VimwikiGenerateLinks call vimwiki#base#generate_links(1)
 
 command! -buffer -nargs=0 VimwikiBacklinks call vimwiki#base#backlinks()
 command! -buffer -nargs=0 VWB call vimwiki#base#backlinks()
@@ -305,8 +306,8 @@ command! -buffer VimwikiListToggle call vimwiki#lst#toggle_list_item()
 
 " table commands
 command! -buffer -nargs=* VimwikiTable call vimwiki#tbl#create(<f-args>)
-command! -buffer VimwikiTableAlignQ call vimwiki#tbl#align_or_cmd('gqq')
-command! -buffer VimwikiTableAlignW call vimwiki#tbl#align_or_cmd('gww')
+command! -buffer -nargs=? VimwikiTableAlignQ call vimwiki#tbl#align_or_cmd('gqq', <f-args>)
+command! -buffer -nargs=? VimwikiTableAlignW call vimwiki#tbl#align_or_cmd('gww', <f-args>)
 command! -buffer VimwikiTableMoveColumnLeft call vimwiki#tbl#move_column_left()
 command! -buffer VimwikiTableMoveColumnRight call vimwiki#tbl#move_column_right()
 
@@ -319,7 +320,7 @@ command! -buffer -bang VimwikiRebuildTags call vimwiki#tags#update_tags(1, '<ban
 command! -buffer -nargs=* -complete=custom,vimwiki#tags#complete_tags
       \ VimwikiSearchTags VimwikiSearch /:<args>:/
 command! -buffer -nargs=* -complete=custom,vimwiki#tags#complete_tags
-      \ VimwikiGenerateTags call vimwiki#tags#generate_tags(<f-args>)
+      \ VimwikiGenerateTags call vimwiki#tags#generate_tags(1, <f-args>)
 
 command! -buffer VimwikiPasteUrl call vimwiki#html#PasteUrl(expand('%:p'))
 command! -buffer VimwikiCatUrl call vimwiki#html#CatUrl(expand('%:p'))
@@ -380,6 +381,11 @@ if !hasmapto('<Plug>VimwikiNormalizeLinkVisualCR')
 endif
 vnoremap <silent><script><buffer>
       \ <Plug>VimwikiNormalizeLinkVisualCR :<C-U>VimwikiNormalizeLink 1<CR>
+
+if !hasmapto('<Plug>VimwikiNextTask')
+  nmap <silent><buffer> gnt <Plug>VimwikiNextTask
+endif
+nnoremap <silent><script><buffer> <Plug>VimwikiNextTask :VimwikiNextTask<CR>
 
 if !hasmapto('<Plug>VimwikiTabnewLink')
   nmap <silent><buffer> <D-CR> <Plug>VimwikiTabnewLink
@@ -574,6 +580,7 @@ if !hasmapto('VimwikiReturn', 'i')
   endif
 endif
 
+
 "Table mappings
  if vimwiki#vars#get_global('table_mappings')
    inoremap <expr> <buffer> <Tab> vimwiki#tbl#kbd_tab()
@@ -581,9 +588,25 @@ endif
  endif
 
 
+" table formatting mappings
+if !hasmapto('<Plug>VimwikiTableAlignQ', 'n') && maparg('gqq', 'n') == ""
+  nmap <silent><buffer> gqq <Plug>VimwikiTableAlignQ
+endif
+nnoremap <silent><buffer> <Plug>VimwikiTableAlignQ :VimwikiTableAlignQ<CR>
+if !hasmapto('<Plug>VimwikiTableAlignQ1', 'n') && maparg('gq1', 'n') == ""
+  nmap <silent><buffer> gq1 <Plug>VimwikiTableAlignQ1
+endif
+nnoremap <silent><buffer> <Plug>VimwikiTableAlignQ1 :VimwikiTableAlignQ 2<CR>
 
-nnoremap <buffer> gqq :VimwikiTableAlignQ<CR>
-nnoremap <buffer> gww :VimwikiTableAlignW<CR>
+if !hasmapto('<Plug>VimwikiTableAlignW', 'n') && maparg('gww', 'n') == ""
+  nmap <silent><buffer> gww <Plug>VimwikiTableAlignW
+endif
+nnoremap <silent><buffer> <Plug>VimwikiTableAlignW :VimwikiTableAlignW<CR>
+if !hasmapto('<Plug>VimwikiTableAlignW1', 'n') && maparg('gw1', 'n') == ""
+  nmap <silent><buffer> gw1 <Plug>VimwikiTableAlignW1
+endif
+nnoremap <silent><buffer> <Plug>VimwikiTableAlignW1 :VimwikiTableAlignW 2<CR>
+
 if !hasmapto('<Plug>VimwikiTableMoveColumnLeft')
   nmap <silent><buffer> <A-Left> <Plug>VimwikiTableMoveColumnLeft
 endif
@@ -593,7 +616,6 @@ if !hasmapto('<Plug>VimwikiTableMoveColumnRight')
 endif
 nnoremap <silent><script><buffer>
       \ <Plug>VimwikiTableMoveColumnRight :VimwikiTableMoveColumnRight<CR>
-
 
 
 " ------------------------------------------------
@@ -633,13 +655,14 @@ vnoremap <silent><buffer> il :<C-U>call vimwiki#lst#TO_list_item(1, 1)<CR>
 if !hasmapto('<Plug>VimwikiAddHeaderLevel')
   nmap <silent><buffer> = <Plug>VimwikiAddHeaderLevel
 endif
-nnoremap <silent><buffer> <Plug>VimwikiAddHeaderLevel :<C-U>call vimwiki#base#AddHeaderLevel()<CR>
+nnoremap <silent><buffer> <Plug>VimwikiAddHeaderLevel :
+      \<C-U>call vimwiki#base#AddHeaderLevel(v:count)<CR>
 
 if !hasmapto('<Plug>VimwikiRemoveHeaderLevel')
   nmap <silent><buffer> - <Plug>VimwikiRemoveHeaderLevel
 endif
 nnoremap <silent><buffer> <Plug>VimwikiRemoveHeaderLevel :
-      \<C-U>call vimwiki#base#RemoveHeaderLevel()<CR>
+      \<C-U>call vimwiki#base#RemoveHeaderLevel(v:count)<CR>
 
 if !hasmapto('<Plug>VimwikiGoToParentHeader')
   nmap <silent><buffer> ]u <Plug>VimwikiGoToParentHeader
@@ -693,7 +716,20 @@ endif
 if vimwiki#vars#get_wikilocal('auto_tags')
   " Automatically update tags metadata on page write.
   augroup vimwiki
-    au BufWritePost <buffer> call vimwiki#tags#update_tags(0, '')
+    au BufWritePre <buffer> call vimwiki#tags#update_tags(0, '')
   augroup END
 endif
 
+if vimwiki#vars#get_wikilocal('auto_generate_links')
+  " Automatically generate links *before* the file is written
+  augroup vimwiki
+    au BufWritePre <buffer> call vimwiki#base#generate_links(0)
+  augroup END
+endif
+
+if vimwiki#vars#get_wikilocal('auto_generate_tags')
+  " Automatically generate tags *before* the file is written
+  augroup vimwiki
+    au BufWritePre <buffer> call vimwiki#tags#generate_tags(0)
+  augroup END
+endif
