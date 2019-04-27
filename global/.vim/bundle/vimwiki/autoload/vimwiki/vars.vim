@@ -203,6 +203,8 @@ function! s:read_global_settings_from_user()
       call s:check_users_value(key, users_value, value_infos, 1)
 
       let g:vimwiki_global_vars[key] = users_value
+      " Remove users_value to prevent type mismatch (E706) errors in vim <7.4.1546
+      unlet users_value
     else
       let g:vimwiki_global_vars[key] = global_settings[key].default
     endif
@@ -265,7 +267,7 @@ function! s:populate_wikilocal_options()
         \ 'custom_wiki2html_args': {'type': type(''), 'default': ''},
         \ 'diary_header': {'type': type(''), 'default': 'Diary', 'min_length': 1},
         \ 'diary_index': {'type': type(''), 'default': 'diary', 'min_length': 1},
-        \ 'diary_rel_path': {'type': type(''), 'default': 'diary/', 'min_length': 1},
+        \ 'diary_rel_path': {'type': type(''), 'default': 'diary/', 'min_length': 0},
         \ 'diary_caption_level': {'type': type(0), 'default': 0, 'min': -1, 'max': 6},
         \ 'diary_sort': {'type': type(''), 'default': 'desc', 'possible_values': ['asc', 'desc']},
         \ 'exclude_files': {'type': type([]), 'default': []},
