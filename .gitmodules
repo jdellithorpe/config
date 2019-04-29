@@ -1,0 +1,4 @@
+[submodule "global/.vim/bundle/vimwiki"]
+	path = global/.vim/bundle/vimwiki
+	url = https://github.com/vimwiki/vimwiki.git
+	branch = dev
