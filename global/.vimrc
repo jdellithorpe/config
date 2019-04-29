@@ -71,7 +71,7 @@ augroup VimwikiSettings
   autocmd FileType vimwiki hi VimwikiHeader6 ctermfg=Brown
 augroup END
 
-let g:vimwiki_list = [{'path': '~/vimwiki/stanford/'}, {'path': '~/vimwiki/ours/'}]
+let g:vimwiki_list = [{'path': '~/vimwiki/stanford/'}, {'path': '~/vimwiki/ours/'}, {'path': '~/vimwiki/personal/'}]
 
 " Settings for C/C++
 augroup CCPPSettings
@@ -93,3 +93,6 @@ function! <SID>SynStack()
   endif
   echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
 endfunc
+
+
+
