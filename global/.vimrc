@@ -83,7 +83,7 @@ augroup END
 " Settings for Java
 augroup Java
   autocmd!
-  autocmd FileType java set textwidth=80|set colorcolumn=81
+  autocmd FileType java set textwidth=99|set colorcolumn=100
 augroup END
 
 nnoremap <leader>sp :call <SID>SynStack()<CR>
@@ -94,5 +94,4 @@ function! <SID>SynStack()
   echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
 endfunc
 
-
-
+let g:vimwiki_conceal_pre = 1
