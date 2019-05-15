@@ -39,23 +39,30 @@ set nocompatible
 filetype plugin indent on
 syntax on
 
-" Open files with cursor on last position {{{
-augroup goto_last_line
-  autocmd!
-  autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
-augroup END
-" }}}
-
-" Vimscript file settings {{{
-augroup filetype_vim
-  autocmd!
-  autocmd FileType vim setlocal foldmethod=marker
-augroup END
-" }}}
+set tags+=~/tags
 
 execute pathogen#infect()
 
-set tags+=~/tags
+" Open files with cursor on last position
+augroup GotoLastLine
+  autocmd!
+  autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+augroup END
+"
+
+" Save and restore folds automatically
+"augroup AutoSaveFolds
+"  autocmd!
+"  autocmd BufWinLeave * mkview
+"  autocmd BufWinEnter * silent loadview
+"augroup END
+
+" Settings for vimscript
+augroup VimscriptSettings
+  autocmd!
+  autocmd FileType vim setlocal foldmethod=marker
+augroup END
+"
 
 " Setings for Vimwiki
 augroup VimwikiSettings
@@ -70,6 +77,8 @@ augroup VimwikiSettings
   autocmd FileType vimwiki hi VimwikiHeader5 ctermfg=Green
   autocmd FileType vimwiki hi VimwikiHeader6 ctermfg=Brown
 augroup END
+
+let g:vimwiki_conceal_pre = 1
 
 let g:vimwiki_list = [{'path': '~/vimwiki/stanford/'}, {'path': '~/vimwiki/ours/'}, {'path': '~/vimwiki/personal/'}]
 
@@ -93,5 +102,3 @@ function! <SID>SynStack()
   endif
   echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
 endfunc
-
-let g:vimwiki_conceal_pre = 1

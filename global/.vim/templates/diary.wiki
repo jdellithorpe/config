@@ -1,16 +1,16 @@
 = DATE =
 
-== Day Begin ==
-
-== OKRs ==
-
-== Notes ==
-
-== Todo List ==
-
 == Day Recap ==
 
 == Next Up ==
+
+== Todo List ==
+
+== Notes ==
+
+== OKRs ==
+
+== Day Begin ==
 
 == Time Card ==
 | Time | Work |
