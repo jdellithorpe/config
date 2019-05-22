@@ -126,7 +126,7 @@ augroup VimwikiSettings
   autocmd FileType vimwiki hi VimwikiHeader4 ctermfg=Cyan
   autocmd FileType vimwiki hi VimwikiHeader5 ctermfg=Green
   autocmd FileType vimwiki hi VimwikiHeader6 ctermfg=Brown
-  autocmd FileType vimwiki nmap <leader>w<leader>w <Plug>VimwikiMakeDiaryNote<bar>:call AddDiaryTemplateIfNew()<cr>
+  autocmd FileType vimwiki nmap <silent> <leader>w<leader>w <Plug>VimwikiMakeDiaryNote<bar>:call AddDiaryTemplateIfNew()<cr>
 augroup END
 
 let g:vimwiki_conceal_pre = 1
