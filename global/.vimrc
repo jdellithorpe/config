@@ -108,10 +108,10 @@ execute pathogen#infect()
 "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-function! AddDiaryTemplateIfNew()
+function! VimwikiAddDiaryTemplateIfNew()
   if getline(1) == ""
     :0r ~/.vim/templates/diary.wiki
-    :0r!echo "= "$(date "+\%a \%b \%d \%Y (\%j)")" ="
+    :%s/DATE/\=substitute(system("date \"+\%a \%b \%d \%Y (\%j)\""), '\n', '', 'g')/g
   endif
 endfunction
 
@@ -126,7 +126,7 @@ augroup VimwikiSettings
   autocmd FileType vimwiki hi VimwikiHeader4 ctermfg=Cyan
   autocmd FileType vimwiki hi VimwikiHeader5 ctermfg=Green
   autocmd FileType vimwiki hi VimwikiHeader6 ctermfg=Brown
-  autocmd FileType vimwiki nmap <silent> <leader>w<leader>w <Plug>VimwikiMakeDiaryNote<bar>:call AddDiaryTemplateIfNew()<cr>
+  autocmd FileType vimwiki nmap <silent> <leader>w<leader>w <Plug>VimwikiMakeDiaryNote<bar>:call VimwikiAddDiaryTemplateIfNew()<cr>
 augroup END
 
 let g:vimwiki_conceal_pre = 1
