@@ -131,6 +131,11 @@ augroup END
 
 let g:vimwiki_conceal_pre = 1
 
-let g:vimwiki_list = [{'path': '~/vimwiki/stanford/'}, {'path': '~/vimwiki/ours/'}, {'path': '~/vimwiki/personal/'}]
+let g:vimwiki_list = [{'path': '~/vimwiki/stanford/',
+      \ 'nested_syntaxes': {'python': 'python', 'c++': 'cpp', 'c': 'c', 'bash': 'sh'}},
+      \ {'path': '~/vimwiki/ours/',
+      \ 'nested_syntaxes': {'python': 'python', 'c++': 'cpp', 'c': 'c', 'bash': 'sh'}},
+      \ {'path': '~/vimwiki/personal/',
+      \ 'nested_syntaxes': {'python': 'python', 'c++': 'cpp', 'c': 'c', 'bash': 'sh'}}]
 
 "command DiaryEntry -1r ~/.vim/templates/diary.wiki|0r! date "+\%a \%b \%d \%Y (\%j)" 
