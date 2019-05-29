@@ -87,6 +87,9 @@ augroup END
 augroup Python
   autocmd!
   autocmd FileType python set textwidth=100|set colorcolumn=101
+  autocmd FileType python set tabstop=2
+  autocmd FileType python set shiftwidth=2
+  autocmd FileType python set expandtab
 augroup END
 
 augroup Vimscript
