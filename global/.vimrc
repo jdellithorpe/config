@@ -36,6 +36,11 @@ augroup END
 "  autocmd BufWinEnter * silent loadview
 "augroup END
 
+" Shortcut for toggling paste mode
+nnoremap <c-p> :set invpaste paste?<cr>
+set pastetoggle=<c-p>
+set showmode
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 
 " Global Key Mappings / Abbreviations
