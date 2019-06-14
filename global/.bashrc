@@ -1,5 +1,6 @@
 # Useful aliases and functions.
 alias mc='mvn compile -DskipTests'
+alias mcas='mvn compile assembly:single -DskipTests'
 alias mi='mvn install -DskipTests'
 
 vimf () {
