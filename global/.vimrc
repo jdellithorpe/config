@@ -3,7 +3,8 @@
 " Global Settings
 "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
+set textwidth=99
+set colorcolumn=100
 set nocompatible
 
 set tabstop=2
