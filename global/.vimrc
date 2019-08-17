@@ -8,6 +8,7 @@ set colorcolumn=100
 set nocompatible
 
 set tabstop=2
+set softtabstop=0
 set shiftwidth=2
 set expandtab
 
@@ -93,14 +94,17 @@ augroup END
 augroup Python
   autocmd!
   autocmd FileType python set textwidth=100|set colorcolumn=101
-  autocmd FileType python set tabstop=2
-  autocmd FileType python set shiftwidth=2
-  autocmd FileType python set expandtab
+  autocmd FileType python set tabstop=2|set softtabstop=0|set shiftwidth=2|set expandtab
 augroup END
 
 augroup Vimscript
   autocmd!
   autocmd FileType vim setlocal foldmethod=marker
+augroup END
+
+augroup Markdown
+  autocmd!
+  autocmd FileType markdown set textwidth=80|set colorcolumn=81
 augroup END
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
