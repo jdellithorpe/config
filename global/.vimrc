@@ -3,8 +3,8 @@
 " Global Settings
 "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set textwidth=99
-set colorcolumn=100
+set textwidth=80
+set colorcolumn=81
 set nocompatible
 
 set tabstop=2
@@ -105,6 +105,11 @@ augroup END
 augroup Markdown
   autocmd!
   autocmd FileType markdown set textwidth=80|set colorcolumn=81
+augroup END
+
+augroup Gitcommit
+  autocmd!
+  autocmd FileType gitcommit set textwidth=72|set colorcolumn=73
 augroup END
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
