@@ -112,6 +112,11 @@ augroup Gitcommit
   autocmd FileType gitcommit set textwidth=72|set colorcolumn=73
 augroup END
 
+augroup Latex
+  autocmd!
+  autocmd FileType tex set textwidth=72|set colorcolumn=73
+augroup END
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 
 " Install Plugins
