@@ -52,6 +52,8 @@ set pastetoggle=<c-p>
 " If in Insert, Replace or Visual mode put a message on the last line.
 set showmode
 
+cnoremap help vert help
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 
 " Global Key Mappings / Abbreviations
