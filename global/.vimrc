@@ -14,6 +14,7 @@ set expandtab
 
 set ruler
 set number
+set relativenumber
 
 set splitbelow
 set splitright
@@ -40,7 +41,15 @@ augroup END
 
 " Shortcut for toggling paste mode
 nnoremap <c-p> :set invpaste paste?<cr>
+" Mappings are ignored in insert mode when past mode is enabled. The key setting
+" for pastetoggle is observed, however. We could just use pastetoggle by itself,
+" since it is observed in all cases if the key is not already mapped to
+" something else, but we don't get any indication of which mode we are in on the
+" vim command line from pastetoggle in normal mode, so we have the mapping in
+" place for covering us in normal mode which will show the resulting mode.
 set pastetoggle=<c-p>
+
+" If in Insert, Replace or Visual mode put a message on the last line.
 set showmode
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -63,8 +72,6 @@ inoremap <c-u> <esc>lviwUei
 
 inoremap jk <esc>
 
-nnoremap H 0
-nnoremap L $
 nnoremap <leader>w :w<cr>
 nnoremap <leader>q :q<cr>
 nnoremap <leader>r :vs<bar>:b#<cr>
@@ -93,7 +100,7 @@ augroup END
 
 augroup Python
   autocmd!
-  autocmd FileType python set textwidth=100|set colorcolumn=101
+  autocmd FileType python set textwidth=80|set colorcolumn=81
   autocmd FileType python set tabstop=2|set softtabstop=0|set shiftwidth=2|set expandtab
 augroup END
 
@@ -140,7 +147,7 @@ endfunction
 
 augroup VimwikiSettings
   autocmd!
-  autocmd FileType vimwiki set textwidth=99|set colorcolumn=100
+  autocmd FileType vimwiki set textwidth=72|set colorcolumn=73
   autocmd FileType vimwiki nmap <leader>we <Plug>VimwikiSplitLink
   autocmd FileType vimwiki nmap <leader>wq <Plug>VimwikiVSplitLink
   autocmd FileType vimwiki hi VimwikiHeader1 ctermfg=Blue
