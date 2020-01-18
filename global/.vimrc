@@ -7,8 +7,8 @@ set textwidth=80
 set colorcolumn=81
 set nocompatible
 
-set tabstop=2
-set softtabstop=0
+set tabstop=8
+set softtabstop=-1
 set shiftwidth=2
 set expandtab
 
@@ -47,12 +47,14 @@ nnoremap <c-p> :set invpaste paste?<cr>
 " something else, but we don't get any indication of which mode we are in on the
 " vim command line from pastetoggle in normal mode, so we have the mapping in
 " place for covering us in normal mode which will show the resulting mode.
-set pastetoggle=<c-p>
+" Disabled for now, because <c-p> is used for completions in insert mode (see
+" i_CTRL-p).
+" set pastetoggle=<c-p>
 
 " If in Insert, Replace or Visual mode put a message on the last line.
 set showmode
 
-cnoremap help vert help
+cnoremap vhelp vert help
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 
