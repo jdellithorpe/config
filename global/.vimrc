@@ -121,6 +121,7 @@ augroup END
 augroup Gitcommit
   autocmd!
   autocmd FileType gitcommit set textwidth=72|set colorcolumn=73
+  autocmd FileType gitcommit call setpos('.', [0, 1, 1, 0])
 augroup END
 
 augroup Latex
